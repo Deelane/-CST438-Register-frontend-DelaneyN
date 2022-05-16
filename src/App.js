@@ -1,25 +1,22 @@
 import './App.css';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import SchedList from './components/SchedList';
 import Semester from './components/Semester';
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import AddStudent from './components/AddStudent';
+import Home from './components/Home';
+import {BrowserRouter, Switch, Route, Link} from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
-      <AppBar position="static" color="default">
-        <Toolbar>
-           <Typography variant="h6" color="inherit">
-            Course Registration
-           </Typography>
-        </Toolbar>
-      </AppBar>
       <BrowserRouter>
+  		<Link to="/">Home</Link>{' '}
+		<Link to="/semester">Schedule</Link>{' '}
+		<Link to="/addstudent">Add Student</Link>{' '}
        <Switch>
-        <Route exact path='/' component={Semester} />
+        <Route exact path='/' component={Home} />
+        <Route path ='/semester' component={Semester} />
         <Route path='/schedule' component={SchedList} />
+        <Route path ='/addstudent' component={AddStudent}/>
        </Switch>
       </BrowserRouter>
     </div>
@@ -27,3 +24,9 @@ function App() {
 }
 
 export default App;
+
+/**      <AppBar position="static" color="default">
+        <Toolbar>
+        </Toolbar>
+      </AppBar>
+       */
