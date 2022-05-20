@@ -8,6 +8,10 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import {SERVER_URL} from '../constants.js'
+import Cookies from 'js-cookie';
+import { ToastContainer, toast } from 'react-toastify';
+
 //import {useNavigate} from 'react-router-dom';
 
 class AddStudent extends Component {
@@ -22,7 +26,44 @@ class AddStudent extends Component {
 	
 	handleSubmit = () => {
 		//insert student into database
-		alert("For debug: inserted student:\n" + JSON.stringify(this.state));
+	    const token = Cookies.get('XSRF-TOKEN');
+		
+		//create student object for POST call request
+		let student = {
+			'name': this.state.name,
+			'email': this.state.email,
+			'status_code': this.state.status_code
+			};
+		
+		//insert student into database
+		fetch(`${SERVER_URL}/student/insert`, 
+		{
+        	headers: { 
+				'Content-Type': 'application/json',
+				'X-XSRF-TOKEN': token  
+				}, 
+   			method: 'POST',
+			body: JSON.stringify(student)
+		})
+	    .then(res => {
+        if (res.ok) {
+          toast.success("Student successfully added", {
+              position: toast.POSITION.BOTTOM_LEFT
+          });
+        } 
+        else {
+          toast.error("Error when adding", {
+              position: toast.POSITION.BOTTOM_LEFT
+          });
+          console.error('Post http status =' + res.status);
+        }})
+    .catch(err => {
+      toast.error("Error when adding", {
+            position: toast.POSITION.BOTTOM_LEFT
+        });
+        console.error(err);
+        
+    })
 		//navigate('/', { replace: true });
 	}
 	
@@ -75,6 +116,7 @@ class AddStudent extends Component {
 					 </Grid>
 	 			 </Grid>
 			 </div>
+             <ToastContainer autoClose={1500} />   
 	      </div>
 	  ); 
     }
