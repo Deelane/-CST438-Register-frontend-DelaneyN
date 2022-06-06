@@ -41,7 +41,8 @@ class AddStudent extends Component {
         	headers: { 
 				'Content-Type': 'application/json',
 				'X-XSRF-TOKEN': token  
-				}, 
+				},
+	        credentials: 'include', 
    			method: 'POST',
 			body: JSON.stringify(student)
 		})
